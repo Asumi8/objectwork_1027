@@ -10,6 +10,15 @@ class VendingMachine
   def initialize
     # 最初の自動販売機に入っている金額は0円
     @slot_money = 0
+    @drink_stocks = [],[],[]
+    5.times{@drink_stocks[0]<<{name: "cola", price: 120}}
+    5.times{@drink_stocks[1]<<{name: "redbull", price: 200}}
+    5.times{@drink_stocks[2]<<{name: "water", price: 100}}
+    @sales_amount = 0
+  end
+
+  def drink_stocks_list
+    @drink_stocks
   end
 
   # 投入金額の総計を取得できる。
@@ -35,67 +44,46 @@ class VendingMachine
     # 自動販売機に入っているお金を0円に戻す
     @slot_money = 0
   end
-end
-
-class Drink
-
-  def initialize
-    @@cola_stock = [
-    {name: "cola", price: 120},
-    {name: "cola", price: 120},
-    {name: "cola", price: 120},
-    {name: "cola", price: 120},
-    {name: "cola", price: 120}
-    ]
-  end
 
   def juice_info
-    if  @cola_stock.any?
-      puts @cola_stock[0][:name]
-      puts @cola_stock[0][:price]
+    if have_stock?
+      puts @drink_stocks[0][:name]
+      puts @drink_stocks[0][:price]
     else
       p "在庫なし"
     end
   end
 
-  # def stock_info
-  #   puts @@cola_stock_now
-  # end
-
-
-  def stock
+  def have_stock?
     if @cola_stock.any?
+      p @cola_stock.count
       true
     else
       false
     end
   end
 
-end
-
-class Purchase
-  
-  def initialize
-    @sales_amount = 0
-  end
-
   def buyable?
-    vending = VendingMachine.new
-    money = gets
-    insert_money = vending.slot_money(money.to_i)
-
-    drink = Drink.new
-    stock = drink.stock_info
-    if insert_money >= 120 && stock == true
-      p @@cola_stock.shift
-      p @@cola_stock_now = @@cola_stock
+    if @slot_money >= 120 && have_stock?
+      p @cola_stock.shift
+      p @sales_amount += 120
+      p @slot_money -= 120
     else
       false
     end
   end
+
+  def buyable_list
+  #  if @slot_money >= 200 && have_stock?
+    
+  #  elsif 
+    
+  #  else
+    
+  #  end
+  end
 end
     
-purchase = Purchase.new
 
 # Step3
 # 投入金額、在庫の点で、コーラが購入できるかどうかを取得できる。
